@@ -38,22 +38,15 @@ Files/Folders
 # Build the Desktop VM
 This section outlines how to prepare packer for execution and building of a new VM.
 
-## Modify the VM identity Values
-Modify the `user-data` file to containe the intended user identity information.  The password must be salted with SHA512.  An easy way to do that with docker is as follows:
-
+1.  Modify VM Specific Data in `user-data`.  The VM password must be SHA512 salted.  Use the following docker command to create a password: 
 `docker run --rm -ti alpine:latest mkpasswd -m sha512`
 
-## Modify VM Variable Information
-At a minimum modify the `vsphere-vm.pkvars.hcl` vm_name_prefix and vm_name_suffix values.  These values combined make up the VM name in vCenter.
+2. Modify VM variable information in `vsphere-vm.pkvars.hcl`. 
 
-## Modify vCenter Variable Information
-Modify the `vshphere.pkrvars.hcl` with credentials and vSphere object values.  Note that environmental variables may be used for secrets.   
+3. Run Packer to Create VM.  During the development of this flow the Ubuntu 20.04 server install has failed.  A bit of exploration has been done but a reason and fix has not been determined at this writing.  The build step may need to be repeated for a successful build. 
 
-## Run Packer to Create VM
-During the development of this flow the Ubuntu 20.04 server install has failed.  A bit of exploration has been done but a reason and fix has not been determined at this writing.  The build step may need to be repeated for a successful build. (And that is another reason why templates are useful.)
-
-* Initialize packer: `packer init .`
-* Build the VM: `packer build -var-file=vsphere.pkrvars.hcl --var-file=vsphere-vm.pkrvars.hcl .`
+  * Initialize packer: `packer init .`
+   * Build the VM: `packer build -var-file=vsphere.pkrvars.hcl --var-file=vsphere-vm.pkrvars.hcl .`
 
 If executing from MacOS it may be necessary to flush the current known hosts SSH key from the `/Users/<username>/.ssh/known-hosts` file.  Use `ssh-keygen -R <hostname-or-ip>` to flush out the old ssh key.
 
@@ -69,7 +62,9 @@ Docker is setup to run as sudo.  Do the following to enable user to run without 
 4.  Test docker operation: `docker run hello-world`
    
 ## VNC Server Setup (Optional)
-Screen sharing can be enabled after a user is logged into the Ubuntu 20.04 Gnome 3 desktop.  Since the desktop is built as a VM the user will initially have SSH access.  The intention of this section is to describe a solution that provides a Gnome 3 desktop remotely.  This section is optional as users may have different desktop preferences.  
+Screen sharing can be enabled after a user is logged into the Ubuntu 20.04 Gnome 3 desktop.  Since the desktop is built as a VM the user will initially have SSH access.  The intention of this section is to describe a solution that provides a Gnome 3 desktop remotely.  This section is optional as users may have different desktop preferences.
+
+Credit for this section: https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04/
 
 1.  ssh into the target Ubuntu machine
 2.  Install required packages: `sudo apt install tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer`
