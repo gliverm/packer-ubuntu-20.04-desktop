@@ -1,0 +1,31 @@
+#cloud-config
+autoinstall:
+  apt:
+    geoip: true
+    preserve_sources_list: false
+    primary:
+    - arches: [amd64, i386]
+      uri: http://us.archive.ubuntu.com/ubuntu
+    - arches: [default]
+      uri: http://ports.ubuntu.com/ubuntu-ports
+  identity: {hostname: ubuntu-desktop, 
+            password: $6$mxvaYxXGbsSRA/No$Pig3DXngkct.x3mk9W0YlSHn32qb5WGTn0kw9ZUTwVTUqthAxGK941L4dBCZJAQEIYV7NqVhS4E2/mYtKJpka1,
+            username: ubuntu}
+  keyboard: {layout: us, toggle: null, variant: ''}
+  locale: en_US
+  network:
+    ethernets:
+      ens192:
+        addresses: [10.253.68.226/26]
+        gateway4: 10.253.68.193
+        nameservers:
+          addresses: [10.255.0.1]
+          search: []
+    version: 2
+  storage:
+    layout:
+      name: lvm
+  ssh:
+    allow-pw: true
+    install-server: true
+  version: 1
