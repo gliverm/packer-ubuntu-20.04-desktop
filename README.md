@@ -1,4 +1,4 @@
-# packer_vsphere-iso-ubuntu-2004-desktop
+# packer-ubuntu-20.04-desktop
 
 This repo was built as an experiment to learn how to build a Ubuntu Server/Desktop from an ISO on vCenter.  I learned a ton from: https://github.com/efops/packer-ubuntu20.04
 
